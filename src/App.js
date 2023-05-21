@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import data from './domains.json'
+import {useState} from 'react';
+
+
+function SearchForm() {
+    const [search, setSearch] = useState("");
+
+    const filterdDomains = () => {
+        if (search == '') {
+            return data;
+        } else {
+            return data.filter((record) => record.name.includes(search))
+        }
+    };
+
+
+    function searchList() {
+        let filteredDom = filterdDomains();
+        return (
+            <ul>
+                {filteredDom.map(record => <li>{record.name}</li>)}
+            </ul>
+        );
+    }
+
+    return (
+        <div>
+            <form>
+                <label>Search here:
+                    <input
+                        type="text"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                    />
+                </label>
+            </form>
+            <div>
+                {searchList()}
+            </div>
+        </div>
+    );
+}
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="App">
+            <SearchForm/>
+        </div>
+    );
 }
 
 export default App;
